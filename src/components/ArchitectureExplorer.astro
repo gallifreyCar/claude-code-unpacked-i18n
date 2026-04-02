@@ -1,0 +1,78 @@
+---
+export interface Props {
+  lang: 'en' | 'zh' | 'ja';
+}
+
+import { ui } from '../i18n/ui';
+import { directories, categories, stats } from '../data/architecture';
+
+const { lang } = Astro.props;
+
+const categoryColors: Record<string, string> = {
+  'Tools & Commands': 'bg-purple-600',
+  'Core Processing': 'bg-blue-600',
+  'UI Layer': 'bg-cyan-600',
+  'Infrastructure': 'bg-green-600',
+  'Support & Utilities': 'bg-yellow-600',
+  'Personality & UX': 'bg-pink-600',
+};
+
+// Sort directories by file count for treemap
+const sortedDirs = [...directories].sort((a, b) => b.files - a.files);
+const maxFiles = Math.max(...sortedDirs.map(d => d.files));
+---
+
+<section id="architecture" class="py-20 px-4 bg-cc-darker/30">
+  <div class="max-w-7xl mx-auto">
+    <!-- Section Header -->
+    <div class="text-center mb-12">
+      <span class="inline-block text-cc-purple font-mono text-sm mb-4">02</span>
+      <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">
+        {ui[lang]['section.architecture.title']}
+      </h2>
+      <p class="text-gray-400 max-w-2xl mx-auto">
+        {ui[lang]['section.architecture.subtitle']}
+      </p>
+    </div>
+
+    <!-- Category Legend -->
+    <div class="flex flex-wrap justify-center gap-3 mb-8">
+      {categories.map((cat) => (
+        <div class="flex items-center gap-2">
+          <span class={`w-3 h-3 rounded ${categoryColors[cat] || 'bg-gray-600'}`}></span>
+          <span class="text-sm text-gray-400">{cat}</span>
+        </div>
+      ))}
+    </div>
+
+    <!-- Treemap -->
+    <div class="bg-cc-dark rounded-2xl border border-gray-700/50 p-6">
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+        {sortedDirs.map((dir) => {
+          const sizePercent = Math.max(40, (dir.files / maxFiles) * 100);
+          return (
+            <button
+              class="group relative p-4 rounded-xl border border-gray-700/50 hover:border-cc-purple/50 transition-all text-left overflow-hidden"
+              style={`min-height: ${sizePercent}px`}
+            >
+              <div
+                class={`absolute inset-0 opacity-20 ${categoryColors[dir.category] || 'bg-gray-600'} group-hover:opacity-30 transition-opacity`}
+              ></div>
+              <div class="relative z-10">
+                <div class="font-mono text-sm text-white group-hover:text-cc-cyan transition-colors">
+                  {dir.name}
+                </div>
+                <div class="text-xs text-gray-400 mt-1">
+                  {dir.files} {lang === 'en' ? 'files' : lang === 'zh' ? '文件' : 'ファイル'}
+                </div>
+                <div class="text-xs text-gray-500 mt-2 line-clamp-2 hidden sm:block">
+                  {dir.description[lang]}
+                </div>
+              </div>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  </div>
+</section>

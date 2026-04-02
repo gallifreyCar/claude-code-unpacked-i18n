@@ -1,0 +1,72 @@
+---
+export interface Props {
+  lang: 'en' | 'zh' | 'ja';
+}
+
+import { ui } from '../i18n/ui';
+import { commandCategories } from '../data/commands';
+
+const { lang } = Astro.props;
+
+const categoryColors: Record<string, string> = {
+  'setup': 'border-blue-500/30 hover:border-blue-500/60',
+  'workflow': 'border-green-500/30 hover:border-green-500/60',
+  'git': 'border-orange-500/30 hover:border-orange-500/60',
+  'debug': 'border-red-500/30 hover:border-red-500/60',
+  'advanced': 'border-purple-500/30 hover:border-purple-500/60',
+};
+---
+
+<section id="commands" class="py-20 px-4 bg-cc-darker/30">
+  <div class="max-w-7xl mx-auto">
+    <!-- Section Header -->
+    <div class="text-center mb-12">
+      <span class="inline-block text-cc-purple font-mono text-sm mb-4">04</span>
+      <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">
+        {ui[lang]['section.commands.title']}
+      </h2>
+      <p class="text-gray-400 max-w-2xl mx-auto">
+        {ui[lang]['section.commands.subtitle']}
+      </p>
+    </div>
+
+    <!-- Command Categories -->
+    <div class="space-y-6">
+      {commandCategories.map((category) => (
+        <div class="bg-cc-dark rounded-2xl border border-gray-700/50 overflow-hidden">
+          <!-- Category Header -->
+          <div class="flex items-center justify-between p-4 bg-cc-darker/50 border-b border-gray-700/50">
+            <h3 class="text-lg font-semibold text-white">
+              {category.name[lang]}
+            </h3>
+            <span class="text-sm text-gray-400">
+              {category.commands.length}
+            </span>
+          </div>
+
+          <!-- Commands Grid -->
+          <div class="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2">
+            {category.commands.map((cmd) => (
+              <button
+                class="command-card group p-2 rounded-lg border transition-all text-left {categoryColors[category.id] || 'border-gray-700/30 hover:border-gray-700/60'}"
+                data-command={cmd.name}
+              >
+                <div class="flex items-center justify-between">
+                  <span class="font-mono text-sm text-cc-cyan group-hover:text-white transition-colors">
+                    {cmd.name}
+                  </span>
+                  {cmd.featureGated && (
+                    <span class="text-xs text-yellow-500">🔒</span>
+                  )}
+                </div>
+                <div class="text-xs text-gray-500 mt-1 line-clamp-1">
+                  {cmd.description[lang]}
+                </div>
+              </button>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,75 @@
+---
+export interface Props {
+  lang: 'en' | 'zh' | 'ja';
+}
+
+import { ui } from '../i18n/ui';
+import { stats } from '../data/architecture';
+
+const { lang } = Astro.props;
+---
+
+<section class="min-h-screen flex flex-col items-center justify-center px-4 pt-20">
+  <div class="text-center max-w-4xl mx-auto">
+    <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-6 animate-fade-in">
+      {ui[lang]['hero.title']}
+    </h1>
+
+    <p class="text-lg sm:text-xl text-gray-300 mb-8 max-w-3xl mx-auto animate-slide-up">
+      {ui[lang]['hero.subtitle']}
+    </p>
+
+    <!-- External Links -->
+    <div class="flex flex-wrap items-center justify-center gap-4 mb-12">
+      <a
+        href="https://deepwiki.com/zackautocracy/claude-code"
+        target="_blank"
+        rel="noopener"
+        class="inline-flex items-center gap-2 px-4 py-2 bg-cc-purple/20 hover:bg-cc-purple/30 border border-cc-purple/50 rounded-lg text-cc-purple transition-colors"
+      >
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        {ui[lang]['hero.askDeepWiki']}
+      </a>
+      <a
+        href="https://news.ycombinator.com/item?id=47597085"
+        target="_blank"
+        rel="noopener"
+        class="inline-flex items-center gap-2 px-4 py-2 bg-orange-500/20 hover:bg-orange-500/30 border border-orange-500/50 rounded-lg text-orange-400 transition-colors"
+      >
+        <span class="w-5 h-5 bg-orange-500 text-white rounded text-xs font-bold flex items-center justify-center">Y</span>
+        {ui[lang]['hero.featuredOn']}
+      </a>
+    </div>
+
+    <!-- Stats -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+      <div class="bg-cc-dark/50 rounded-xl p-6 border border-gray-700/50">
+        <div class="text-3xl sm:text-4xl font-bold text-cc-purple mb-2">{stats.files}</div>
+        <div class="text-gray-400">{ui[lang]['hero.files']}</div>
+      </div>
+      <div class="bg-cc-dark/50 rounded-xl p-6 border border-gray-700/50">
+        <div class="text-3xl sm:text-4xl font-bold text-cc-blue mb-2">{stats.linesOfCode}</div>
+        <div class="text-gray-400">{ui[lang]['hero.linesOfCode']}</div>
+      </div>
+      <div class="bg-cc-dark/50 rounded-xl p-6 border border-gray-700/50">
+        <div class="text-3xl sm:text-4xl font-bold text-cc-cyan mb-2">{stats.tools}</div>
+        <div class="text-gray-400">{ui[lang]['hero.tools']}</div>
+      </div>
+      <div class="bg-cc-dark/50 rounded-xl p-6 border border-gray-700/50">
+        <div class="text-3xl sm:text-4xl font-bold text-cc-green mb-2">{stats.commands}</div>
+        <div class="text-gray-400">{ui[lang]['hero.commands']}</div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <a
+      href="#agent-loop"
+      class="inline-flex items-center gap-2 text-lg text-cc-purple hover:text-cc-cyan transition-colors group"
+    >
+      {ui[lang]['hero.startExploring']}
+      <span class="animate-bounce">↓</span>
+    </a>
+  </div>
+</section>

@@ -1,0 +1,374 @@
+---
+export interface Props {
+  lang: 'en' | 'zh' | 'ja';
+}
+
+import { ui } from '../i18n/ui';
+
+const { lang } = Astro.props;
+
+const steps = [
+  {
+    id: 1,
+    name: { en: 'User Input', zh: '用户输入', ja: 'ユーザー入力' },
+    description: {
+      en: 'User types a message or pipes input through stdin',
+      zh: '用户输入消息或通过 stdin 管道输入',
+      ja: 'ユーザーがメッセージを入力するか、stdinを通じて入力をパイプする',
+    },
+    sourceFile: 'src/components/TextInput.tsx',
+    terminal: { en: 'Find all TODO comments in src/ and create a summary', zh: '查找 src/ 中所有 TODO 注释并创建摘要', ja: 'src/のすべてのTODOコメントを見つけてサマリーを作成' },
+  },
+  {
+    id: 2,
+    name: { en: 'Message Creation', zh: '消息创建', ja: 'メッセージ作成' },
+    description: {
+      en: 'createUserMessage() wraps the text into Anthropic message format',
+      zh: 'createUserMessage() 将文本包装为 Anthropic 消息格式',
+      ja: 'createUserMessage()がテキストをAnthropicメッセージ形式にラップする',
+    },
+    sourceFile: 'src/utils/messages.ts',
+    terminal: { en: 'Creating message payload...', zh: '创建消息负载...', ja: 'メッセージペイロードを作成中...' },
+  },
+  {
+    id: 3,
+    name: { en: 'History Append', zh: '历史追加', ja: '履歴追加' },
+    description: {
+      en: 'Message is added to the session history',
+      zh: '消息被添加到会话历史记录',
+      ja: 'メッセージがセッション履歴に追加される',
+    },
+    sourceFile: 'src/services/history.ts',
+    terminal: { en: 'Appending to conversation history...', zh: '追加到对话历史...', ja: '会話履歴に追加中...' },
+  },
+  {
+    id: 4,
+    name: { en: 'System Prompt Assembly', zh: '系统提示组装', ja: 'システムプロンプト構築' },
+    description: {
+      en: 'Complete system prompt is assembled with context, tools, and instructions',
+      zh: '完整的系统提示与上下文、工具和指令一起组装',
+      ja: 'コンテキスト、ツール、指示を含む完全なシステムプロンプトが構築される',
+    },
+    sourceFile: 'src/context.ts',
+    terminal: { en: 'Assembling system prompt...', zh: '组装系统提示...', ja: 'システムプロンプトを構築中...' },
+  },
+  {
+    id: 5,
+    name: { en: 'API Streaming', zh: 'API 流式传输', ja: 'APIストリーミング' },
+    description: {
+      en: 'Streaming API call to Anthropic with the complete context',
+      zh: '使用完整上下文向 Anthropic 发起流式 API 调用',
+      ja: '完全なコンテキストでAnthropicへのストリーミングAPI呼び出し',
+    },
+    sourceFile: 'src/services/api/index.ts',
+    terminal: { en: 'Streaming from API...', zh: '从 API 流式传输...', ja: 'APIからストリーミング中...' },
+  },
+  {
+    id: 6,
+    name: { en: 'Token Parsing', zh: 'Token 解析', ja: 'トークン解析' },
+    description: {
+      en: 'Response tokens are parsed and accumulated',
+      zh: '响应 token 被解析和累积',
+      ja: '応答トークンが解析され、蓄積される',
+    },
+    sourceFile: 'src/QueryEngine.ts',
+    terminal: { en: 'Parsing response tokens...', zh: '解析响应 token...', ja: '応答トークンを解析中...' },
+  },
+  {
+    id: 7,
+    name: { en: 'Tool Detection', zh: '工具检测', ja: 'ツール検出' },
+    description: {
+      en: 'Detect tool_use blocks and prepare for execution',
+      zh: '检测 tool_use 块并准备执行',
+      ja: 'tool_useブロックを検出し、実行を準備する',
+    },
+    sourceFile: 'src/tools.ts',
+    terminal: { en: 'Tool detected: Glob', zh: '检测到工具: Glob', ja: 'ツール検出: Glob' },
+  },
+  {
+    id: 8,
+    name: { en: 'Tool Execution Loop', zh: '工具执行循环', ja: 'ツール実行ループ' },
+    description: {
+      en: 'Execute tools in sequence, feeding results back to the API',
+      zh: '按顺序执行工具，将结果反馈给 API',
+      ja: 'ツールを順番に実行し、結果をAPIにフィードバックする',
+    },
+    sourceFile: 'src/QueryEngine.ts',
+    terminal: { en: 'Executing tools...', zh: '执行工具...', ja: 'ツールを実行中...' },
+  },
+  {
+    id: 9,
+    name: { en: 'Response Rendering', zh: '响应渲染', ja: '応答レンダリング' },
+    description: {
+      en: 'AI response is rendered in the terminal UI',
+      zh: 'AI 响应在终端 UI 中渲染',
+      ja: 'AI応答がターミナルUIでレンダリングされる',
+    },
+    sourceFile: 'src/components/ResponseRenderer.tsx',
+    terminal: { en: 'Rendering response...', zh: '渲染响应...', ja: '応答をレンダリング中...' },
+  },
+  {
+    id: 10,
+    name: { en: 'Post-Sampling Hooks', zh: '后采样钩子', ja: 'ポストサンプリングフック' },
+    description: {
+      en: 'Execute any configured post-sampling hooks',
+      zh: '执行任何已配置的后采样钩子',
+      ja: '設定されたポストサンプリングフックを実行する',
+    },
+    sourceFile: 'src/hooks/index.ts',
+    terminal: { en: 'Running post-sampling hooks...', zh: '运行后采样钩子...', ja: 'ポストサンプリングフックを実行中...' },
+  },
+  {
+    id: 11,
+    name: { en: 'Await Next Input', zh: '等待下一次输入', ja: '次の入力待ち' },
+    description: {
+      en: 'Return to idle state, waiting for the next user message',
+      zh: '返回空闲状态，等待下一个用户消息',
+      ja: 'アイドル状態に戻り、次のユーザーメッセージを待つ',
+    },
+    sourceFile: 'src/main.tsx',
+    terminal: { en: 'Ready for next input...', zh: '准备接收下一次输入...', ja: '次の入力を待機中...' },
+  },
+];
+---
+
+<section id="agent-loop" class="py-20 px-4">
+  <div class="max-w-7xl mx-auto">
+    <!-- Section Header -->
+    <div class="text-center mb-12">
+      <span class="inline-block text-cc-purple font-mono text-sm mb-4">01</span>
+      <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">
+        {ui[lang]['section.agentLoop.title']}
+      </h2>
+      <p class="text-gray-400 max-w-2xl mx-auto">
+        {ui[lang]['section.agentLoop.subtitle']}
+      </p>
+    </div>
+
+    <!-- Agent Loop Visualization -->
+    <div class="bg-cc-dark rounded-2xl border border-gray-700/50 overflow-hidden">
+      <!-- Step Navigation -->
+      <div class="flex flex-wrap gap-1 p-4 bg-cc-darker/50 border-b border-gray-700/50">
+        {steps.map((step, index) => (
+          <button
+            id={`step-btn-${step.id}`}
+            class="step-btn px-3 py-2 text-sm rounded-lg transition-colors flex items-center gap-2"
+            data-step={step.id}
+          >
+            <span class="w-6 h-6 rounded-full bg-gray-700 text-xs flex items-center justify-center">{step.id}</span>
+            <span class="hidden sm:inline">{step.name[lang]}</span>
+          </button>
+        ))}
+      </div>
+
+      <!-- Step Content -->
+      <div class="p-6">
+        <div id="step-content" class="step-content">
+          {steps.map((step) => (
+            <div id={`step-panel-${step.id}`} class="step-panel hidden" data-step={step.id}>
+              <div class="flex flex-col lg:flex-row gap-6">
+                <!-- Description -->
+                <div class="flex-1">
+                  <div class="flex items-center gap-4 mb-4">
+                    <h3 class="text-xl font-semibold text-white flex items-center gap-2">
+                      <span class="w-8 h-8 rounded-full bg-cc-purple flex items-center justify-center text-sm">{step.id}</span>
+                      {step.name[lang]}
+                    </h3>
+                    <a
+                      href={`https://github.com/zackautocracy/claude-code/blob/main/${step.sourceFile}`}
+                      target="_blank"
+                      rel="noopener"
+                      class="text-sm text-cc-cyan hover:underline flex items-center gap-1"
+                    >
+                      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                      </svg>
+                      {step.sourceFile}
+                    </a>
+                  </div>
+                  <p class="text-gray-300 mb-6">{step.description[lang]}</p>
+                </div>
+
+                <!-- Terminal Visualization -->
+                <div class="flex-1">
+                  <div class="bg-cc-darker rounded-xl p-4 font-mono text-sm border border-gray-700/50">
+                    <div class="flex items-center gap-2 mb-3">
+                      <span class="w-3 h-3 rounded-full bg-red-500"></span>
+                      <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
+                      <span class="w-3 h-3 rounded-full bg-green-500"></span>
+                      <span class="text-gray-500 text-xs ml-2">claude-code</span>
+                    </div>
+                    <div class="text-gray-300">
+                      <span class="text-cc-green">$</span>
+                      <span class="ml-2">{step.terminal[lang]}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <!-- Controls -->
+        <div class="flex items-center justify-between mt-6 pt-6 border-t border-gray-700/50">
+          <div class="flex items-center gap-2">
+            <button id="prev-btn" class="p-2 rounded-lg bg-gray-700/50 hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <button id="play-btn" class="p-2 rounded-lg bg-cc-purple hover:bg-cc-purple/80 transition-colors">
+              <svg id="play-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <svg id="pause-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 9v6m4-6v6m7-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </button>
+            <button id="next-btn" class="p-2 rounded-lg bg-gray-700/50 hover:bg-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <span id="step-indicator" class="text-gray-400 text-sm">1/11</span>
+            <div class="flex items-center gap-1 ml-4">
+              <button class="speed-btn px-2 py-1 text-xs rounded bg-gray-700/50 hover:bg-gray-700 transition-colors" data-speed="0.5">0.5x</button>
+              <button class="speed-btn px-2 py-1 text-xs rounded bg-cc-purple transition-colors" data-speed="1">1x</button>
+              <button class="speed-btn px-2 py-1 text-xs rounded bg-gray-700/50 hover:bg-gray-700 transition-colors" data-speed="2">2x</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  let currentStep = 1;
+  let isPlaying = false;
+  let playInterval: number | null = null;
+  let speed = 1;
+
+  function showStep(step: number) {
+    // Hide all panels
+    document.querySelectorAll('.step-panel').forEach(panel => {
+      panel.classList.add('hidden');
+    });
+
+    // Show current panel
+    const panel = document.getElementById(`step-panel-${step}`);
+    if (panel) {
+      panel.classList.remove('hidden');
+      panel.classList.add('animate-fade-in');
+    }
+
+    // Update buttons
+    document.querySelectorAll('.step-btn').forEach(btn => {
+      const btnStep = parseInt(btn.getAttribute('data-step') || '0');
+      if (btnStep === step) {
+        btn.classList.add('bg-cc-purple', 'text-white');
+        btn.classList.remove('text-gray-400');
+      } else {
+        btn.classList.remove('bg-cc-purple', 'text-white');
+        btn.classList.add('text-gray-400');
+      }
+    });
+
+    // Update indicator
+    const indicator = document.getElementById('step-indicator');
+    if (indicator) {
+      indicator.textContent = `${step}/11`;
+    }
+
+    // Update prev/next buttons
+    const prevBtn = document.getElementById('prev-btn') as HTMLButtonElement;
+    const nextBtn = document.getElementById('next-btn') as HTMLButtonElement;
+    if (prevBtn) prevBtn.disabled = step === 1;
+    if (nextBtn) nextBtn.disabled = step === 11;
+
+    currentStep = step;
+  }
+
+  function nextStep() {
+    if (currentStep < 11) {
+      showStep(currentStep + 1);
+    } else {
+      stopPlaying();
+    }
+  }
+
+  function startPlaying() {
+    isPlaying = true;
+    document.getElementById('play-icon')?.classList.add('hidden');
+    document.getElementById('pause-icon')?.classList.remove('hidden');
+
+    const interval = 2000 / speed;
+    playInterval = window.setInterval(nextStep, interval);
+  }
+
+  function stopPlaying() {
+    isPlaying = false;
+    document.getElementById('play-icon')?.classList.remove('hidden');
+    document.getElementById('pause-icon')?.classList.add('hidden');
+
+    if (playInterval) {
+      clearInterval(playInterval);
+      playInterval = null;
+    }
+  }
+
+  // Initialize
+  document.addEventListener('DOMContentLoaded', () => {
+    showStep(1);
+
+    // Step button clicks
+    document.querySelectorAll('.step-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const step = parseInt(btn.getAttribute('data-step') || '1');
+        showStep(step);
+      });
+    });
+
+    // Prev/Next buttons
+    document.getElementById('prev-btn')?.addEventListener('click', () => {
+      if (currentStep > 1) showStep(currentStep - 1);
+    });
+
+    document.getElementById('next-btn')?.addEventListener('click', () => {
+      if (currentStep < 11) showStep(currentStep + 1);
+    });
+
+    // Play/Pause button
+    document.getElementById('play-btn')?.addEventListener('click', () => {
+      if (isPlaying) {
+        stopPlaying();
+      } else {
+        if (currentStep === 11) showStep(1);
+        startPlaying();
+      }
+    });
+
+    // Speed buttons
+    document.querySelectorAll('.speed-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        speed = parseFloat(btn.getAttribute('data-speed') || '1');
+
+        document.querySelectorAll('.speed-btn').forEach(b => {
+          b.classList.remove('bg-cc-purple');
+          b.classList.add('bg-gray-700/50');
+        });
+        btn.classList.add('bg-cc-purple');
+        btn.classList.remove('bg-gray-700/50');
+
+        if (isPlaying) {
+          stopPlaying();
+          startPlaying();
+        }
+      });
+    });
+  });
+</script>

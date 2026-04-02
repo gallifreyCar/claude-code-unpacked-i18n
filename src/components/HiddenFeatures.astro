@@ -1,0 +1,56 @@
+---
+export interface Props {
+  lang: 'en' | 'zh' | 'ja';
+}
+
+import { ui } from '../i18n/ui';
+import { hiddenFeatures } from '../data/features';
+
+const { lang } = Astro.props;
+---
+
+<section id="features" class="py-20 px-4">
+  <div class="max-w-7xl mx-auto">
+    <!-- Section Header -->
+    <div class="text-center mb-12">
+      <span class="inline-block text-cc-purple font-mono text-sm mb-4">05</span>
+      <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4">
+        {ui[lang]['section.features.title']}
+      </h2>
+      <p class="text-gray-400 max-w-2xl mx-auto">
+        {ui[lang]['section.features.subtitle']}
+      </p>
+    </div>
+
+    <!-- Features Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      {hiddenFeatures.map((feature) => (
+        <a
+          href={feature.deepWikiUrl}
+          target="_blank"
+          rel="noopener"
+          class="group p-5 bg-cc-dark rounded-xl border border-gray-700/50 hover:border-cc-purple/50 transition-all"
+        >
+          <div class="flex items-start justify-between mb-3">
+            <h3 class="text-lg font-semibold text-white group-hover:text-cc-cyan transition-colors">
+              {feature.name}
+            </h3>
+            <span class="text-xs text-cc-purple bg-cc-purple/10 px-2 py-1 rounded">
+              Hidden
+            </span>
+          </div>
+          <p class="text-sm text-gray-400 leading-relaxed">
+            {feature.description[lang]}
+          </p>
+          <div class="mt-3 text-xs text-cc-cyan opacity-0 group-hover:opacity-100 transition-opacity">
+            Ask DeepWiki →
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <p class="text-center text-gray-500 text-sm mt-6">
+      {ui[lang]['label.explore']}
+    </p>
+  </div>
+</section>

@@ -1,0 +1,64 @@
+---
+export interface Props {
+  lang: 'en' | 'zh' | 'ja';
+}
+
+import { ui, languages } from '../i18n/ui';
+
+const { lang } = Astro.props;
+const currentPath = Astro.url.pathname;
+
+// Generate language switch URLs
+const getLangUrl = (targetLang: string) => {
+  const segments = currentPath.split('/');
+  segments[1] = targetLang;
+  return segments.join('/') || `/${targetLang}`;
+};
+---
+
+<nav class="fixed top-0 left-0 right-0 z-50 bg-cc-darker/80 backdrop-blur-md border-b border-gray-800">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <!-- Logo -->
+      <a href={`/${lang}/`} class="flex items-center gap-2 text-white font-semibold">
+        <span class="text-2xl">⚡</span>
+        <span class="hidden sm:inline">Claude Code Unpacked</span>
+      </a>
+
+      <!-- Navigation Links -->
+      <div class="hidden md:flex items-center gap-6">
+        <a href={`/${lang}/#agent-loop`} class="text-gray-300 hover:text-white transition-colors">
+          {ui[lang]['nav.agentLoop']}
+        </a>
+        <a href={`/${lang}/#architecture`} class="text-gray-300 hover:text-white transition-colors">
+          {ui[lang]['nav.architecture']}
+        </a>
+        <a href={`/${lang}/#tools`} class="text-gray-300 hover:text-white transition-colors">
+          {ui[lang]['nav.tools']}
+        </a>
+        <a href={`/${lang}/#commands`} class="text-gray-300 hover:text-white transition-colors">
+          {ui[lang]['nav.commands']}
+        </a>
+        <a href={`/${lang}/#features`} class="text-gray-300 hover:text-white transition-colors">
+          {ui[lang]['nav.features']}
+        </a>
+      </div>
+
+      <!-- Language Switcher -->
+      <div class="flex items-center gap-2">
+        {Object.entries(languages).map(([code, name]) => (
+          <a
+            href={getLangUrl(code)}
+            class={`px-2 py-1 text-sm rounded transition-colors ${
+              code === lang
+                ? 'bg-cc-purple text-white'
+                : 'text-gray-400 hover:text-white hover:bg-gray-700'
+            }`}
+          >
+            {name}
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</nav>
