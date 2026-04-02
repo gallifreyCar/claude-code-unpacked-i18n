@@ -48,7 +48,7 @@ const getLangUrl = (targetLang: string) => {
       <div class="flex items-center gap-2">
         {Object.entries(languages).map(([code, name]) => (
           <a
-            href={getLangUrl(code)}
+            href={code === lang ? `/${lang}/` : `/${code}/`}
             class={`px-2 py-1 text-sm rounded transition-colors ${
               code === lang
                 ? 'bg-cc-purple text-white'
