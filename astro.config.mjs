@@ -11,6 +11,6 @@ export default defineConfig({
       prefixDefaultLocale: true,
     },
   },
-  base: '/',
-  site: 'https://yourusername.github.io',
+  base: '/claude-code-unpacked-i18n/',
+  site: 'https://gallifreycar.github.io',
 });
