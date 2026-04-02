@@ -254,6 +254,15 @@ export const directories: Directory[] = [
   },
 ];
 
+export const categoryNames: Record<string, { en: string; zh: string; ja: string }> = {
+  'Tools & Commands': { en: 'Tools & Commands', zh: '工具与命令', ja: 'ツールとコマンド' },
+  'Core Processing': { en: 'Core Processing', zh: '核心处理', ja: 'コア処理' },
+  'UI Layer': { en: 'UI Layer', zh: 'UI 层', ja: 'UIレイヤー' },
+  'Infrastructure': { en: 'Infrastructure', zh: '基础设施', ja: 'インフラ' },
+  'Support & Utilities': { en: 'Support & Utilities', zh: '支持与工具', ja: 'サポートとユーティリティ' },
+  'Personality & UX': { en: 'Personality & UX', zh: '个性与体验', ja: 'パーソナリティとUX' },
+};
+
 export const categories = [
   'Tools & Commands',
   'Core Processing',

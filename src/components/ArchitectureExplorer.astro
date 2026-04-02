@@ -4,7 +4,7 @@ export interface Props {
 }
 
 import { ui } from '../i18n/ui';
-import { directories, categories, stats } from '../data/architecture';
+import { directories, categories, categoryNames, stats } from '../data/architecture';
 
 const { lang } = Astro.props;
 
@@ -40,7 +40,7 @@ const maxFiles = Math.max(...sortedDirs.map(d => d.files));
       {categories.map((cat) => (
         <div class="flex items-center gap-2">
           <span class={`w-3 h-3 rounded ${categoryColors[cat] || 'bg-gray-600'}`}></span>
-          <span class="text-sm text-gray-400">{cat}</span>
+          <span class="text-sm text-gray-400">{categoryNames[cat]?.[lang] || cat}</span>
         </div>
       ))}
     </div>
