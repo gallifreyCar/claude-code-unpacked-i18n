@@ -59,8 +59,7 @@ export const ui = {
     'footer.disclaimer': 'Unofficial. Not affiliated with Anthropic. Based on publicly available source code, so some things might be wrong or outdated. Curation assisted by AI.',
     'footer.analysisDate': 'Analysis date',
     'footer.createdBy': 'Created by',
-    'footer.source': 'Analysis based on the Claude Code source shared in',
-    'footer.thisPost': 'this post by @Fried_rice',
+    'footer.source': 'Multilingual i18n version',
   },
   zh: {
     // Header
@@ -112,8 +111,7 @@ export const ui = {
     'footer.disclaimer': '非官方。与 Anthropic 无关。基于公开可用的源代码，因此某些内容可能错误或过时。AI 辅助整理。',
     'footer.analysisDate': '分析日期',
     'footer.createdBy': '创建者',
-    'footer.source': '分析基于',
-    'footer.thisPost': '@Fried_rice 的此帖子',
+    'footer.source': '多语言 i18n 版本',
   },
   ja: {
     // Header
@@ -165,8 +163,7 @@ export const ui = {
     'footer.disclaimer': '非公式。Anthropicとは無関係。公開されているソースコードに基づいているため、一部が間違っているか古い可能性があります。AI支援で整理。',
     'footer.analysisDate': '分析日',
     'footer.createdBy': '作成者',
-    'footer.source': '分析は',
-    'footer.thisPost': '@Fried_riceのこの投稿',
+    'footer.source': '多言語i18n版',
   },
 } as const;
 
